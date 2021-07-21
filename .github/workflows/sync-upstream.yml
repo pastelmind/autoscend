@@ -1,0 +1,32 @@
+# Based on sample workflow at https://github.com/marketplace/actions/fork-sync-with-upstream
+
+name: "Sync with upstream"
+on:
+  schedule:
+    - cron: "41 2,8,14,20 * * *"
+  # Manually run when clicked in the Web UI
+  workflow_dispatch:
+
+jobs:
+  sync-with-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Pull upstream changes
+        id: sync
+        uses: aormsby/Fork-Sync-With-Upstream-action@v2.3
+        with:
+          upstream_repository: Loathing-Associates-Scripting-Society/autoscend
+          upstream_branch: master
+          target_branch: master
+
+      - name: Check for new commits
+        if: steps.sync.outputs.has_new_commits
+        run: echo "New commit(s) found!"
+
+      - name: Timestamp
+        run: date
