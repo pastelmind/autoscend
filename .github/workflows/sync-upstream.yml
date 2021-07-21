@@ -3,9 +3,10 @@
 name: "Sync with upstream"
 on:
   schedule:
-    - cron: "41 2,8,14,20 * * *"
-  # Manually run when clicked in the Web UI
-  workflow_dispatch:
+    # Run every 6 hours
+    - cron: "56 */6 * * *"
+    # Note: Do not add 'workflow_dispatch'. Adding it appears to make GitHub
+    # ignore the 'schedule' directive.
 
 jobs:
   sync-with-upstream:
