@@ -1,4 +1,4 @@
-# Based on sample workflow at https://github.com/marketplace/actions/fork-sync-with-upstream
+# Based on sample workflow at https://github.com/aormsby/Fork-Sync-With-Upstream-action
 
 name: "Sync with upstream"
 on:
@@ -19,15 +19,17 @@ jobs:
 
       - name: Pull upstream changes
         id: sync
-        uses: aormsby/Fork-Sync-With-Upstream-action@v2.3
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.1
         with:
-          upstream_repository: Loathing-Associates-Scripting-Society/autoscend
-          upstream_branch: master
-          target_branch: master
+          upstream_sync_repo: Loathing-Associates-Scripting-Society/autoscend
+          upstream_sync_branch: master
+          target_sync_branch: master
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check for new commits
-        if: steps.sync.outputs.has_new_commits
+        if: steps.sync.outputs.has_new_commits == 'true'
         run: echo "New commit(s) found!"
 
       - name: Timestamp
         run: date
+
